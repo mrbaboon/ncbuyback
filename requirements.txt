@@ -1,0 +1,9 @@
+allianceauth==3.6.0
+django-environ
+gunicorn
+django-eveuniverse
+gevent
+django-health-check
+django-debug-toolbar
+flower
+aa-buybackprogram==1.12.0

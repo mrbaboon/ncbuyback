@@ -1,0 +1,96 @@
+version: "3"
+services:
+  ncbuyback:
+    image: ncbuyback
+    build: .
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mariadb
+      - redis
+    env_file:
+      - .env
+    volumes:
+      - .:/opt/ncbuyback
+
+  worker:
+    image: ncbuyback
+    build: .
+    command: celery -A ncbuyback.celery worker -l info --max-tasks-per-child=250 --max-memory-per-child=262144 --pool=gevent --concurrency=30
+    depends_on:
+      - mariadb
+      - redis
+    env_file:
+      - .env
+    volumes:
+      - .:/opt/ncbuyback
+
+  beat:
+    image: ncbuyback
+    build: .
+    command: celery -A ncbuyback.celery beat -l info
+    depends_on:
+      - mariadb
+      - redis
+    env_file:
+      - .env
+    volumes:
+      - .:/opt/ncbuyback
+
+  migrate:
+    image: ncbuyback
+    build: .
+    command: ["python", "manage.py", "migrate"]
+    restart: no
+    depends_on:
+      - mariadb
+      - redis
+    env_file:
+      - .env
+    volumes:
+      - .:/opt/ncbuyback
+
+  flower:
+    image: ncbuyback
+    build: .
+    command: ["celery", "-A", "ncbuyback.celery", "flower", "--address=0.0.0.0", "--port=5555"]
+    restart: no
+    depends_on:
+      - mariadb
+      - redis
+    env_file:
+      - .env
+    ports:
+      - "5555:5555"
+    volumes:
+      - .:/opt/ncbuyback
+
+  mariadb:
+    image: mariadb:10
+    env_file:
+      - .env
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  adminer:
+    image: adminer
+    depends_on:
+      - mariadb
+    ports:
+      - 3380:8080
+
+  mailcatcher:
+    image: dockage/mailcatcher
+    ports:
+      - "1080:1080"
+
+volumes:
+  dbdata:
