@@ -80,12 +80,14 @@ services:
     ports:
       - "6379:6379"
 
-  adminer:
-    image: adminer
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8080:80"
     depends_on:
       - mariadb
-    ports:
-      - 3380:8080
+    env_file:
+      - .env
 
   mailcatcher:
     image: dockage/mailcatcher

@@ -8,3 +8,4 @@ django-debug-toolbar==4.1.0
 flower==2.0.0
 aa-buybackprogram==1.12.0
 pytest
+pytest-django
