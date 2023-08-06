@@ -1,0 +1,60 @@
+name: Django CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.11]
+
+    services:
+      mariadb:
+        image: mariadb:10
+        env:
+          MARIADB_ROOT_PASSWORD: ${{ matrix.database-password }}
+          MARIADB_DATABASE: ${{ matrix.database-name }}
+          MARIADB_USER: ${{ matrix.database-user }}
+          MARIADB_PASSWORD: ${{ matrix.database-password }}
+        ports:
+          - 3306:3306
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run Tests
+      env:
+        DJANGO_DEBUG: True
+        DJANGO_SECRET_KEY: secret
+        SECRET_KEY: secret
+        REDIS_HOST: redis
+        DB_HOST: localhost
+        DB_PORT: 3306
+        DB_NAME: ${{ matrix.database-name }}
+        DB_USER: ${{ matrix.database-user }}
+        DB_PASSWORD: ${{ matrix.database-password }}
+        ESI_CLIENT_ID: fakeclientid
+        ESI_SECRET_KEY: fakesecretkey
+        ESI_USER_CONTACT_EMAIL: webmaster@site.local
+        SITE_URL: http://localhost:8000
+        EMAIL_HOST: mailcatcher
+        EMAIL_PORT: 1025
+        EMAIL_USE_TLS: False
+        DEFAULT_FROM_EMAIL: webmaster@site.local
+      run: |
+        python manage.py test
