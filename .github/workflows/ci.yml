@@ -8,20 +8,22 @@ on:
 
 jobs:
   build:
+    env:
+      MARIADB_ROOT_PASSWORD: password
+      DATABASE_NAME: allianceauth
+      DATABASE_USER: allianceauth
+      DATABASE_PASSWORD: allianceauth
+
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 4
-      matrix:
-        python-version: [3.11]
 
     services:
       mariadb:
         image: mariadb:10
         env:
-          MARIADB_ROOT_PASSWORD: ${{ matrix.database-password }}
-          MARIADB_DATABASE: ${{ matrix.database-name }}
-          MARIADB_USER: ${{ matrix.database-user }}
-          MARIADB_PASSWORD: ${{ matrix.database-password }}
+          MARIADB_ROOT_PASSWORD: ${{ env.MARIADB_ROOT_PASSWORD }}
+          MARIADB_DATABASE: ${{ env.DATABASE_NAME }}
+          MARIADB_USER: ${{ env.DATABASE_USER }}
+          MARIADB_PASSWORD: ${{ env.DATABASE_PASSWORD }}
         ports:
           - 3306:3306
 
@@ -30,7 +32,7 @@ jobs:
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: 3.11
 
     - name: Install Dependencies
       run: |
@@ -45,9 +47,9 @@ jobs:
         REDIS_HOST: redis
         DB_HOST: localhost
         DB_PORT: 3306
-        DB_NAME: ${{ matrix.database-name }}
-        DB_USER: ${{ matrix.database-user }}
-        DB_PASSWORD: ${{ matrix.database-password }}
+        DB_NAME: ${{ env.DATABASE_NAME }}
+        DB_USER: ${{ env.DATABASE_USER }}
+        DB_PASSWORD: ${{ env.DATABASE_PASSWORD }}
         ESI_CLIENT_ID: fakeclientid
         ESI_SECRET_KEY: fakesecretkey
         ESI_USER_CONTACT_EMAIL: webmaster@site.local
