@@ -54,8 +54,8 @@ jobs:
         DB_HOST: localhost
         DB_PORT: 3306
         DB_NAME: ${{ env.DATABASE_NAME }}
-        DB_USER: ${{ env.DATABASE_USER }}
-        DB_PASSWORD: ${{ env.DATABASE_PASSWORD }}
+        DB_USER: root
+        DB_PASSWORD: ${{ env.MARIADB_ROOT_PASSWORD }}
         ESI_CLIENT_ID: fakeclientid
         ESI_SECRET_KEY: fakesecretkey
         ESI_USER_CONTACT_EMAIL: webmaster@site.local
