@@ -73,4 +73,4 @@ jobs:
         EMAIL_PORT: 1025
         EMAIL_USE_TLS: False
         DEFAULT_FROM_EMAIL: webmaster@site.local
-      run: pytest
+      run: python manage.py test
