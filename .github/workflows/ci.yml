@@ -59,8 +59,8 @@ jobs:
         DJANGO_DEBUG: True
         DJANGO_SECRET_KEY: secret
         SECRET_KEY: secret
-        REDIS_HOST: localhost
-        DB_HOST: localhost
+        REDIS_HOST: 127.0.0.1
+        DB_HOST: 127.0.0.1
         DB_PORT: 3306
         DB_NAME: ${{ env.DATABASE_NAME }}
         DB_USER: ${{ env.MYSQL_ROOT_USER }}
