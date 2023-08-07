@@ -10,7 +10,7 @@ jobs:
   build:
     env:
       MYSQL_ROOT_USER: root
-      MYSQL_ROOT_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: root
       DATABASE_NAME: allianceauth
       DATABASE_USER: allianceauth
       DATABASE_PASSWORD: allianceauth
@@ -22,7 +22,7 @@ jobs:
       mariadb:
         image: mariadb:latest
         ports:
-          - 3306
+          - 3306:3306
         env:
           MYSQL_USER: ${{ env.DATABASE_USER }}
           MYSQL_PASSWORD: ${{ env.DATABASE_PASSWORD }}
