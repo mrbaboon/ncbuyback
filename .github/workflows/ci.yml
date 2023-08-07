@@ -29,9 +29,9 @@ jobs:
           MYSQL_DATABASE: ${{ env.DATABASE_NAME }}
           MYSQL_ROOT_PASSWORD: ${{ env.MYSQL_ROOT_PASSWORD }}
         options: >-
-          --health-cmd="/usr/local/bin/healthcheck.sh --connect" 
-          --health-interval=10s 
-          --health-timeout=3s 
+          --health-cmd="/usr/local/bin/healthcheck.sh --connect"
+          --health-interval=10s
+          --health-timeout=3s
           --health-retries=3
 
       redis:
