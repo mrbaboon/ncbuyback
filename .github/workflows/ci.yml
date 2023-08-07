@@ -9,6 +9,7 @@ on:
 jobs:
   build:
     env:
+      MARIADB_ROOT_USER: root
       MARIADB_ROOT_PASSWORD: password
       DATABASE_NAME: allianceauth
       DATABASE_USER: allianceauth
@@ -56,7 +57,7 @@ jobs:
         DB_HOST: localhost
         DB_PORT: 3306
         DB_NAME: ${{ env.DATABASE_NAME }}
-        DB_USER: root
+        DB_USER: ${{ env.MARIADB_ROOT_USER }}
         DB_PASSWORD: ${{ env.MARIADB_ROOT_PASSWORD }}
         ESI_CLIENT_ID: fakeclientid
         ESI_SECRET_KEY: fakesecretkey
