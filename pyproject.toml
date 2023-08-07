@@ -2,3 +2,8 @@
 DJANGO_SETTINGS_MODULE = "ncbuyback.settings"
 # -- recommended but optional:
 python_files = ["test_*.py", "*_test.py", "testing/python/*.py"]
+
+
+[tool.black]
+line-length = 120
+target-version = ['py311']
